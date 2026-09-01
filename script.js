@@ -19,7 +19,7 @@ const kd={
 eden:["FILE // FR-01","EDEN","FRANCE","능글맞고 냉소적인 킬러. 소리에 민감하며, 빠르고 정확한 공격으로 플레이어를 단칼에 죽인다.","신속 / 정확","CENTRAL [마을 중심]","KILLER","portraits/eden.png"],
 ash:["FILE // RU-02","ASH","RUSSIA","압도적인 체격과 짐승 같은 괴력을 가진 킬러. 어둡고 조용한 장소에 홀로 머무는 경우가 많다.","괴력 / 돌진","OUTSKIRTS [마을 외곽]","KILLER","portraits/ash.png"],
 vincent:["FILE // UK-03","VINCENT","UNITED KINGDOM","정중한 태도와 차분한 말투를 유지하는 킬러. 빠른 죽음보다 오래 이어지는 저항과 반응을 선호한다.","통제 / 지연","CENTRAL [마을 중심]","KILLER","portraits/vincent.png"],
-kits:["FILE // DE-04","KITS","GERMANY","호기심과 충동에 따라 움직이는 변덕스러운 킬러. 추격과 사냥을 놀이처럼 즐긴다.","변덕 / 추격","CATHEDRAL [성당 구역]","KILLER","portraits/kits.png"],
+kits:["FILE // DE-04","KITS","GERMANY","호기심과 충동에 따라 움직이는 변덕스러운 흡혈귀. 추격과 사냥을 놀이처럼 즐긴다.","변덕 / 추격","CATHEDRAL [성당 구역]","KILLER","portraits/kits.png"],
 kamiya:["FILE // JP-05","KAMIYA REN","JAPAN","신중하고 침착한 플레이어. 위험을 피해 움직이며, 주변 상황을 예민하게 살피고 필요한 물자를 확보하며 생존한다.","계산 / 배신","UNKNOWN [알 수 없음]","PLAYER","portraits/kamiya-ren.png"]
 };
 $$(".tabs button[data-k]").forEach(b=>b.onclick=()=>{
