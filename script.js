@@ -11,21 +11,22 @@ yes.onclick=()=>{boot.classList.remove("accepted");void boot.offsetWidth;boot.cl
   warning.classList.add("show");
   setTimeout(()=>box.classList.remove("glitch-in"),620);
 },900)}
-no.onclick=()=>{if(no.dataset.l)return;no.dataset.l=1;locked.classList.add("show");no.textContent="LOCKED";boot.classList.remove("denied");void boot.offsetWidth;boot.classList.add("denied");musicTry();setTimeout(()=>$(".choices").classList.add("locked"),430);setTimeout(()=>locked.classList.remove("show"),2800)}
+no.onclick=()=>{if(no.dataset.l)return;no.dataset.l=1;locked.classList.add("show");no.textContent="LOCKED";boot.classList.remove("denied");void boot.offsetWidth;boot.classList.add("denied");musicTry();setTimeout(()=>$(".choices").classList.add("locked"),430);/* ACCESS DENIED remains visible after NO is locked */}
 $("#warningX").onclick=()=>{let b=$(".warning-box");b.classList.add("glitch");setTimeout(()=>{warning.classList.remove("show");b.classList.remove("glitch")},620)}
 $("#mapOpen").onclick=()=>$("#mapModal").classList.add("show"); $("#mapX").onclick=()=>$("#mapModal").classList.remove("show"); $("#mapModal .shade").onclick=()=>$("#mapModal").classList.remove("show");
 $("#pp").onclick=()=>bgm.paused?bgm.play():bgm.pause();$("#stop").onclick=()=>{bgm.pause();bgm.currentTime=0};$("#vol").oninput=e=>{bgm.volume=+e.target.value;bgm.muted=false};$("#mute").onclick=()=>bgm.muted=!bgm.muted;bgm.onplay=()=>$("#pp").textContent="Ⅱ";bgm.onpause=()=>$("#pp").textContent="▶";
 const kd={
-eden:["FILE // FR-01","EDEN","FRANCE","능글맞고 냉소적인 킬러. 소리에 민감하며, 빠르고 정확한 공격으로 플레이어를 단칼에 죽인다.","FAST / CLEAN","CENTRAL","portraits/eden.png"],
-ash:["FILE // RU-02","ASH","RUSSIA","압도적인 체격과 짐승 같은 괴력을 가진 킬러. 어둡고 조용한 장소에 홀로 머무는 경우가 많다.","BRUTAL / DIRECT","OUTSKIRTS","portraits/ash.png"],
-vincent:["FILE // UK-03","VINCENT","UNITED KINGDOM","정중한 태도와 차분한 말투를 유지하는 킬러. 빠른 죽음보다 오래 이어지는 저항과 반응을 선호한다.","SLOW / CONTROL","CENTRAL","portraits/vincent.png"],
-kits:["FILE // DE-04","KITS","GERMANY","호기심과 충동에 따라 움직이는 변덕스러운 킬러. 추격과 사냥을 놀이처럼 즐긴다.","CHAOTIC / CHASE","CATHEDRAL","portraits/kits.png"],
-kamiya:["FILE // JP-05","KAMIYA REN","JAPAN","차분하고 예의 바른 태도를 유지하는 플레이어. 생존을 최우선으로 판단하며, 필요하다면 다른 플레이어를 배신하는 것도 주저하지 않는다.","CAUTIOUS / CALCULATING","UNKNOWN","portraits/kamiya-ren.png"]
+eden:["FILE // FR-01","EDEN","FRANCE","능글맞고 냉소적인 킬러. 소리에 민감하며, 빠르고 정확한 공격으로 플레이어를 단칼에 죽인다.","신속 / 정확","CENTRAL [마을 중심]","KILLER","portraits/eden.png"],
+ash:["FILE // RU-02","ASH","RUSSIA","압도적인 체격과 짐승 같은 괴력을 가진 킬러. 어둡고 조용한 장소에 홀로 머무는 경우가 많다.","괴력 / 돌진","OUTSKIRTS [마을 외곽]","KILLER","portraits/ash.png"],
+vincent:["FILE // UK-03","VINCENT","UNITED KINGDOM","정중한 태도와 차분한 말투를 유지하는 킬러. 빠른 죽음보다 오래 이어지는 저항과 반응을 선호한다.","통제 / 지연","CENTRAL [마을 중심]","KILLER","portraits/vincent.png"],
+kits:["FILE // DE-04","KITS","GERMANY","호기심과 충동에 따라 움직이는 변덕스러운 킬러. 추격과 사냥을 놀이처럼 즐긴다.","변덕 / 추격","CATHEDRAL [성당 구역]","KILLER","portraits/kits.png"],
+kamiya:["FILE // JP-05","KAMIYA REN","JAPAN","차분하고 예의 바른 태도를 유지하는 플레이어. 생존을 최우선으로 판단하며, 필요하다면 다른 플레이어를 배신하는 것도 주저하지 않는다.","계산 / 배신","UNKNOWN [알 수 없음]","PLAYER","portraits/kamiya-ren.png"]
 };
 $$(".tabs button[data-k]").forEach(b=>b.onclick=()=>{
   let d=kd[b.dataset.k];
-  ["#kf","#kn","#ko","#kd","#ks","#kr"].forEach((x,i)=>$(x).textContent=d[i]);
-  const portrait=$("#killerPortrait"); portrait.src=d[6]; portrait.alt=d[1];
+  ["#kf","#kn","#ko","#kd","#ks","#kr","#krole"].forEach((x,i)=>$(x).textContent=d[i]);
+  const portrait=$("#killerPortrait"); portrait.src=d[7]; portrait.alt=d[1];
+  $$(".tabs button[data-k]").forEach(x=>x.classList.toggle("selected",x===b));
 });
 const deletedWarning=$("#deletedKillerWarning"), deletedBtn=$("#deletedKillerBtn");
 function openDeletedWarning(){
@@ -125,7 +126,6 @@ function renderZone(name){
 $$('.areas button').forEach(b=>b.addEventListener('click',()=>{
   $$('.areas button').forEach(x=>x.classList.remove('active'));
   b.classList.add('active');
-  $('#areaName').textContent=b.dataset.n;
   $('#areaText').textContent=b.dataset.t;
   renderZone(b.dataset.n);
 }));
@@ -153,6 +153,7 @@ let mazePlayer = {x:0,y:0};
 let mazeExit = {x:mazeN-1,y:mazeN-1};
 let mazeAttempt = 0;
 let mazeSteps = 0;
+let mazeDeaths = 0;
 let mazeEnded = false;
 let mazeIsEscapable = false;
 let mazeKiller = {x:mazeN-1,y:0};
@@ -209,7 +210,7 @@ function mazeKillerStep(){
   }
 }
 function updateMazeStatus(label='ALIVE'){
-  $('#mazeStatus').innerHTML=`ATTEMPT // ${String(mazeAttempt).padStart(3,'0')}<br>STATUS // ${label}<br>STEPS // ${mazeSteps}`;
+  $('#mazeStatus').innerHTML=`ATTEMPT // ${String(mazeAttempt).padStart(3,'0')}<br>STATUS // ${label}<br>STEPS // ${mazeSteps}<br>DEATHS // ${mazeDeaths}`;
 }
 function drawMaze(){
   const ctx=mazeCtx, C=mazeCell;
@@ -232,13 +233,14 @@ function showMazeOverlay(html, victory=false){
 }
 function hideMazeOverlay(){const o=$('#mazeOverlay');o.classList.remove('show','victory');o.innerHTML='';}
 function mazeDeath(message='YOU WERE FOUND.'){
+  mazeDeaths++;
   mazeEnded=true;updateMazeStatus('DEAD');drawMaze();
   showMazeOverlay(`<div><strong>YOU DIED.</strong><small>${message}</small><button id="mazeContinue" type="button">CONTINUE?</button></div>`);
   setTimeout(()=>{const b=$('#mazeContinue');if(b)b.addEventListener('click',newMazeAttempt);},0);
 }
 function mazeVictory(){
   mazeEnded=true;updateMazeStatus('ESCAPED');drawMaze();
-  showMazeOverlay(`<div><strong>CONGRATULATIONS.</strong><small class="victory-copy">YOU ABANDONED THE ONE YOU LOVE.</small><em>ESCAPE CONFIRMED.</em></div>`,true);
+  showMazeOverlay(`<div><strong>CONGRATULATIONS.</strong><small class="victory-copy">YOU ABANDONED THE ONE YOU LOVE.</small><small class="victory-ko">당신은 사랑하는 사람을 버렸습니다.</small><em>ESCAPE CONFIRMED.</em></div>`,true);
 }
 function newMazeAttempt(){
   mazeAttempt++;mazeSteps=0;mazeEnded=false;mazeKillerAwake=false;
