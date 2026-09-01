@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Continue?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="rain"></canvas><div class="grain"></div><div class="vignette"></div>
+<div id="cursor" class="cursor"><i></i></div>
+
+<section id="boot" class="boot">
+  <div class="boot-inner">
+    <p class="sys">SYSTEM // DEATH RECOVERY PROTOCOL</p>
+    <h1 data-text="𝙲𝙾𝙽𝚃𝙸𝙽𝚄𝙴?">𝙲𝙾𝙽𝚃𝙸𝙽𝚄𝙴?</h1>
+    <div class="choices"><button id="yes">YES</button><button id="no">NO</button></div>
+    <p id="locked">ACCESS DENIED // OPTION LOCKED</p>
+  </div>
+</section>
+
+<div id="warning" class="warning" aria-hidden="true">
+ <div class="shade"></div>
+ <div class="warning-box">
+  <div class="tri"><b>!</b></div>
+  <p class="sys">SYSTEM WARNING // IRREVERSIBLE ENTRY</p>
+  <h2>FROM THIS POINT FORWARD, THE GAME CANNOT BE TERMINATED.<br>RETURN TO REALITY IS IMPOSSIBLE.</h2>
+  <p>이제부터 게임 종료 및 현실로의 귀환은 불가능합니다.</p>
+  <button id="warningX" class="x">×</button>
+ </div>
+</div>
+
+<header>
+<nav><a href="#world">WORLD</a><a href="#killers">FILES</a><a href="#system">SYSTEM</a><a href="#test">ESCAPE</a></nav>
+<button id="rainBtn">RAIN // ON</button></header>
+
+<nav class="page-rail" aria-label="Page navigation">
+  <a href="#top" data-target="top" class="active"><span>00</span><i></i></a>
+  <a href="#world" data-target="world"><span>01</span><i></i></a>
+  <a href="#killers" data-target="killers"><span>02</span><i></i></a>
+  <a href="#system" data-target="system"><span>03</span><i></i></a>
+  <a href="#test" data-target="test"><span>04</span><i></i></a>
+  <a href="#farewell" data-target="farewell"><span>05</span><i></i></a>
+</nav>
+
+<div class="music">
+ <button id="pp">Ⅱ</button><button id="stop">■</button><span>BGM</span>
+ <input id="vol" type="range" min="0" max="1" step=".01" value=".45"><button id="mute">◖)))</button>
+</div>
+<audio id="bgm" src="Continue.mp3" autoplay loop preload="auto"></audio>
+
+<main id="top">
+<section class="hero section">
+ <div class="hero-grid">
+  <div>
+   <p class="eyebrow">PVE HORROR SURVIVAL // UNKNOWN SERVER</p>
+   <h2 class="big">DIE.<br><em>RETURN.</em><br>CONTINUE.</h2>
+   <p class="desc">죽음은 아무것도 바꿀 수 없습니다.<br>다시 선택할 차례입니다.</p>
+   <a href="#world" class="enter">ENTER THE VILLAGE ↘</a>
+  </div>
+  <button id="mapOpen" class="map-thumb"><img src="village-map.png" alt="Continue? 마을 지도"><span>CLICK TO EXPAND ↗</span></button>
+ </div>
+</section>
+
+<div id="mapModal" class="map-modal"><div class="shade"></div><div class="map-frame"><img src="village-map.png"><button id="mapX" class="x">×</button></div></div>
+<div id="imageModal" class="map-modal image-modal" aria-hidden="true"><div class="shade"></div><div class="map-frame image-frame"><img id="imageModalImg" src="" alt=""><div id="imageModalCaption" class="image-modal-caption"></div><button id="imageModalX" class="x">×</button></div></div>
+
+<section id="world" class="section">
+ <div class="head compact-head"><b>01 /</b><div><p class="eyebrow section-label">VILLAGE ZONES</p></div></div>
+ <div class="world-intro"><p class="lead">19세기 영국을 모티브로 한 폐허 마을.</p><p>짙은 안개가 마을 전역을 뒤덮고 있으며, 해가 지면 어김없이 비가 내리기 시작한다. 광장과 주택가, 성당, 산업 구역, 빈민가, 공동묘지와 강변까지 마을의 모든 구역은 하나의 거대한 사냥터로 이어져 있다.</p><small>COORD // UNKNOWN · WEATHER // FOG, NIGHT RAIN · EXIT // NONE</small></div>
+ <div class="areas"><button class="active" data-n="CENTRAL" data-t="광장 · 상점가 · 잡화점 · 저택가 · 주택가.">CENTRAL</button><button data-n="CATHEDRAL" data-t="고딕 성당 · 성당 묘지.">CATHEDRAL</button><button data-n="INDUSTRIAL" data-t="공장 · 창고 거리 · 창고 · 지하수로.">INDUSTRIAL</button><button data-n="SLUM" data-t="빈민가 · 뒷골목 · 폐가.">SLUM</button><button data-n="OUTSKIRTS" data-t="강변 · 공동묘지 · 안개숲.">OUTSKIRTS</button></div>
+ <div class="area-copy">AREA // <b id="areaName">CENTRAL</b><span id="areaText">광장 · 상점가 · 잡화점 · 저택가 · 주택가.</span></div>
+ <div id="zoneGallery" class="zone-gallery" aria-live="polite"></div>
+</section>
+
+<section id="killers" class="section">
+ <div class="head compact-head"><b>02 /</b><div><p class="eyebrow section-label">KILLERS &amp; PLAYER</p></div></div>
+ <div class="killer-wrap"><div class="tabs"><button data-k="eden">01 EDEN</button><button data-k="ash">02 ASH</button><button data-k="vincent">03 VINCENT</button><button data-k="kits">04 KITS</button><button data-k="kamiya">05 KAMIYA REN</button><button id="deletedKillerBtn" class="locked-tab" type="button">06 LOCKED</button></div>
+ <div class="killer"><div class="slot portrait"><img id="killerPortrait" src="portraits/eden.png" alt="EDEN"></div><div class="killer-info"><small id="kf">FILE // FR-01</small><h3 id="kn">EDEN</h3><b id="ko">FRANCE</b><p id="kd">능글맞고 냉소적인 킬러. 소리에 민감하며, 빠르고 정확한 공격으로 플레이어를 단칼에 죽인다.</p><div class="spec"><span>STYLE<br><b id="ks">FAST / CLEAN</b></span><span>AREA<br><b id="kr">CENTRAL</b></span><span>STATUS<br><b>ACTIVE</b></span><span>REVIVE<br><b>AVAILABLE</b></span></div></div></div></div>
+</section>
+
+<div id="deletedKillerWarning" class="warning deleted-warning" aria-hidden="true">
+ <div class="shade"></div>
+ <div class="warning-box">
+  <div class="tri"><b>!</b></div>
+  <p class="sys">FILE 06 // ACCESS RESTRICTED</p>
+  <h2>THIS KILLER WAS DELETED FOR FAILURE TO FOLLOW THE RULES.</h2>
+  <p>규칙을 지키지 못하여 삭제된 킬러입니다.</p>
+  <button id="deletedKillerX" class="x">×</button>
+ </div>
+</div>
+
+<section id="system" class="section">
+ <div class="head compact-head"><b>03 /</b><div><p class="eyebrow section-label">PLAYER GUIDE</p></div></div>
+ <div class="cards"><article><small>01</small><h3>DEATH</h3><p>치명상을 입으면 데스 사운드가 시작된다. 약 1분 뒤 시신은 흔적 없이 사라진다.</p></article><article><small>02</small><h3>CONTINUE?</h3><p>죽음 뒤 화면에 단 하나의 질문이 뜬다. 응답하지 않아도 시스템은 결정을 기다리지 않는다.</p></article><article><small>03</small><h3>FARMING</h3><p>맵에 생성되는 다양한 아이템을 파밍할 수 있다.</p></article><article><small>04</small><h3>ATTACK</h3><p>플레이어의 공격은 킬러에게 30%의 피해만 적용된다.</p></article></div>
+</section>
+
+<section id="test" class="section maze-section">
+ <div class="head compact-head"><b>04 /</b><div><p class="eyebrow section-label">ESCAPE ATTEMPT</p></div></div>
+ <div class="maze-wrap">
+  <div class="maze-side">
+   <p class="maze-lead">There may be an exit.</p>
+   <p class="maze-help">WASD 또는 방향키로 이동하세요.<br>모바일에서는 아래 방향 버튼을 사용할 수 있습니다.</p>
+   <div id="mazeStatus" class="maze-status">ATTEMPT // 001<br>STATUS // ALIVE</div>
+   <button id="mazeReset" class="maze-reset" type="button">NEW ATTEMPT</button>
+  </div>
+  <div class="maze-game">
+   <div class="maze-canvas-frame"><canvas id="mazeCanvas" width="600" height="600"></canvas><div id="mazeOverlay" class="maze-overlay" aria-live="polite"></div></div>
+   <div class="maze-dpad" aria-label="미로 이동 버튼">
+    <button type="button" data-move="0,-1">▲</button>
+    <div><button type="button" data-move="-1,0">◀</button><button type="button" data-move="0,1">▼</button><button type="button" data-move="1,0">▶</button></div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="farewell" class="farewell"><div class="farewell-box"><h2>𝚈𝚘𝚞 𝚌𝚊𝚗 𝚍𝚒𝚎.<br>𝚈𝚘𝚞 𝚌𝚊𝚗𝚗𝚘𝚝 𝚕𝚎𝚊𝚟𝚎.</h2></div></section>
+</main>
+
+<footer><div><strong>CONTINUE?</strong><p>Death changes nothing.</p></div></footer>
+<script src="script.js"></script>
+</body></html>
